@@ -381,9 +381,22 @@ require('lazy').setup({
     opts = {},
     -- Optional dependencies
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
-    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if you prefer nvim-web-devicons
+    --dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if you prefer nvim-web-devicons
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
+    config = function()
+      require('oil').setup {
+        view_options = {
+          show_hidden = true,
+          is_hidden_file = function(name)
+            return vim.startswith(name, '.')
+          end,
+        },
+      }
+      vim.keymap.set('n', '<leader>o', function()
+        require('oil').open(nil)
+      end, { desc = '[O]il open curr dir' })
+    end,
   },
   -- LSP Plugins
   {
